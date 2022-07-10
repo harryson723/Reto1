@@ -154,7 +154,7 @@
         <Component class="javax.swing.JComboBox" name="comboDocumentType">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Tarjeta de Identidad&quot;, &quot;Cedula de Ciudadania&quot;, &quot;Pasaporte&quot;})" type="code"/>
+              <Connection code="typeDocumentCombo" type="code"/>
             </Property>
           </Properties>
           <AuxValues>

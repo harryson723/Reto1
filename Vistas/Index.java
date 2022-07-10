@@ -9,6 +9,8 @@ import Classes.Conexion;
 import Classes.Empleado;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author YanethM
  */
-public class Index extends javax.swing.JFrame implements ActionListener {
+public class Index extends javax.swing.JFrame implements ActionListener, MouseListener {
 
     public PersonTable personTable;
     public PanelNavigation panelNavigation;
@@ -31,16 +33,15 @@ public class Index extends javax.swing.JFrame implements ActionListener {
     public int indexWidth, indexHeight;
 
     // variables de tamano de la ventana
-
     public Index() {
         initComponents();
         this.setLocationRelativeTo(null);
         // tamanos de las vistas
-         indexWidth = this.getWidth();
-         indexHeight = this.getHeight();
+        indexWidth = this.getWidth();
+        indexHeight = this.getHeight();
         int personTableWidth = 763;
         int personTableHeight = 385;
-        int panelNavigationWidth = 653;
+        int panelNavigationWidth = 673;
         int panelNavigationHeight = 414;
         int panelChangeWidth = 493;
         int panelChangenHeight = 345;
@@ -66,6 +67,10 @@ public class Index extends javax.swing.JFrame implements ActionListener {
         this.personTable.buttonCancel.addActionListener(this);
         this.personTable.buttonCreate.addActionListener(this);
         this.panelNavigation.buttonAddEmployed.addActionListener(this);
+
+        this.panelNavigation.buttonConsult.addActionListener(this);
+
+        this.panelNavigation.tableEmployed.addMouseListener(this);
 
         // listar empleados
         showEmployedTable();
@@ -270,11 +275,10 @@ public class Index extends javax.swing.JFrame implements ActionListener {
 
             }
         }
-        
+
         // cambiar contrasena
-        
-        if(event == this.panelChangePass.buttonChangePass) {
-            if(this.panelChangePass.textPass.getText().equals(this.panelChangePass.textPass1.getText())) {
+        if (event == this.panelChangePass.buttonChangePass) {
+            if (this.panelChangePass.textPass.getText().equals(this.panelChangePass.textPass1.getText())) {
                 pass = this.panelChangePass.textPass.getText();
                 JOptionPane.showMessageDialog(null, "Cambio de contraseña exitoso");
                 this.panelPrincipal.setSize(indexWidth, indexHeight);
@@ -283,9 +287,9 @@ public class Index extends javax.swing.JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Error ingrese contraseñas iguales");
             }
         }
-       
+
         // cambio de paneles por boton
-         if(event == this.buttonChangePass) {
+        if (event == this.buttonChangePass) {
             showWindow(panelChangePass);
         }
         if (event == this.panelNavigation.buttonAddEmployed) {
@@ -315,22 +319,34 @@ public class Index extends javax.swing.JFrame implements ActionListener {
             }
 
         }
+
+        // Ver  a un empleado existente
+        if (event == this.panelNavigation.buttonConsult) {
+            showEmployedTable();
+        }
+
     }
 
     private void showEmployedTable() {
-        String query = "SELECT * FROM `empleados`";
+        String query = "";
+        if (this.panelNavigation.textSearchEmp.getText().isEmpty()) {
+            query = "SELECT * FROM `empleados`";
+        } else {
+           query = "SELECT * FROM `empleados` WHERE nombreEmp LIKE '%" + this.panelNavigation.textSearchEmp.getText() + "%' or '%" + this.panelNavigation.textSearchEmp.getText() + "%'" ; 
+        }
         try {
             ResultSet rs = conexion.doQuery(query);
-            Object[] empleados = new Object[5];
+            Object[] empleados = new Object[6];
             DefaultTableModel contenidoTabla = (DefaultTableModel) this.panelNavigation.tableEmployed.getModel();
             contenidoTabla.setRowCount(0);
             while (rs.next()) {
-                empleados[0] = rs.getString("nombreEmp");
-                empleados[1] = rs.getString("apellidos");
-                empleados[2] = rs.getString("tipoDocumento");
-                empleados[3] = rs.getString("documento");
-                empleados[4] = rs.getString("correo");
-              
+                empleados[0] = rs.getString("idEmp");
+                empleados[1] = rs.getString("nombreEmp");
+                empleados[2] = rs.getString("apellidos");
+                empleados[3] = rs.getString("tipoDocumento");
+                empleados[4] = rs.getString("documento");
+                empleados[5] = rs.getString("correo");
+
                 contenidoTabla.addRow(empleados);
             }
 
@@ -341,7 +357,7 @@ public class Index extends javax.swing.JFrame implements ActionListener {
 
     private void insertEmployed(Empleado employed) {
         String query = "INSERT INTO `empleados`(`nombreEmp`, `apellidos`, `tipoDocumento`, `documento`, `correo`) \n"
-                + "VALUES  ( \""+ employed.getNombre() + "\", \"" + employed.getApellidos() + "\", \"" + employed.getTipoDocumento() + "\", \"" + employed.getDocumento() + "\", \"" + employed.getEmail() + "\")";
+                + "VALUES  ( \"" + employed.getNombre() + "\", \"" + employed.getApellidos() + "\", \"" + employed.getTipoDocumento() + "\", \"" + employed.getDocumento() + "\", \"" + employed.getEmail() + "\")";
         try {
             Connection cn = conexion.getConnection();
             Statement st = cn.createStatement();
@@ -352,4 +368,52 @@ public class Index extends javax.swing.JFrame implements ActionListener {
         }
     }
 
+    private ShowUserForm showUserInfo() {
+
+        ShowUserForm showUserForm = new ShowUserForm(this, rootPaneCheckingEnabled);
+
+        String idEmployed = (String) this.panelNavigation.tableEmployed.getValueAt(this.panelNavigation.selectedRow, 0);
+        String firtsNaame = (String) this.panelNavigation.tableEmployed.getValueAt(this.panelNavigation.selectedRow, 1);
+        String lastName = (String) this.panelNavigation.tableEmployed.getValueAt(this.panelNavigation.selectedRow, 2);
+        String document = (String) this.panelNavigation.tableEmployed.getValueAt(this.panelNavigation.selectedRow, 4);
+        String mail = (String) this.panelNavigation.tableEmployed.getValueAt(this.panelNavigation.selectedRow, 5);
+        showUserForm.textId.setText(idEmployed);
+        showUserForm.textFirtsName.setText(firtsNaame);
+        showUserForm.textLastName.setText(lastName);
+        showUserForm.textDocument.setText(document);
+        showUserForm.textMail.setText(mail);
+
+        return showUserForm;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        Object event = e.getSource();
+        if (event == this.panelNavigation.tableEmployed) {
+            showUserInfo().setVisible(true);
+            showEmployedTable();
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        Object event = e.getSource();
+        if (event == this.panelNavigation.tableEmployed) {
+            showEmployedTable();
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
 }

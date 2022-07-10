@@ -5,17 +5,23 @@
  */
 package Vistas;
 
+import Controler.TypeDocument;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+
 /**
  *
  * @author HarryFora
  */
 public class PersonTable extends javax.swing.JPanel {
 
-    /**
-     * Creates new form PersonTable
-     */
+   ComboBoxModel typeDocumentCombo;
+   
     public PersonTable() {
+        typeDocumentCombo = new DefaultComboBoxModel(TypeDocument.values());
         initComponents();
+        
+        
     }
 
     /**
@@ -52,7 +58,7 @@ public class PersonTable extends javax.swing.JPanel {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("FORMULARIO DE REGISTRO PERSONA");
 
-        comboDocumentType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tarjeta de Identidad", "Cedula de Ciudadania", "Pasaporte"}));
+        comboDocumentType.setModel(typeDocumentCombo);
 
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Nombre");

@@ -10,13 +10,16 @@ import javax.swing.JOptionPane;
 public class Conexion {
 
     Connection connection;
-
+    
+    String url = "jdbc:mysql://localhost:3306/";
+    String db = "programamisiontic";
+    String user = "root";
+    String password = "root";
     public Conexion() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/programamisiontic", "root", "root");
+            connection = DriverManager.getConnection(url + db, user, password);
             if (connection != null) {
                 System.out.println("Connected" + connection);
 
@@ -37,14 +40,25 @@ public class Conexion {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
 
-            connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/programamisiontic", "root", "root");
+            connection = DriverManager.getConnection(url + db, user, password);
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(query);
             return rs;
         } catch (Exception e) {
         }
         return null;
+    }
+    
+    public void doUpdate(String query) throws ClassNotFoundException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            connection = DriverManager.getConnection(url + db, user, password);
+             Statement st = connection.createStatement();
+             st.executeUpdate(query);
+        } catch (SQLException e ) {
+            System.out.println(e.getMessage());
+        }
     }
 
 }

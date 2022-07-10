@@ -5,15 +5,15 @@
  */
 package Vistas;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author HarryFora
  */
 public class PanelNavigation extends javax.swing.JPanel {
 
-    /**
-     * Creates new form panelNavigation
-     */
+    public int selectedRow = -1;
     public PanelNavigation() {
         initComponents();
     }
@@ -35,9 +35,8 @@ public class PanelNavigation extends javax.swing.JPanel {
         buttonAddEmployed = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableEmployed = new javax.swing.JTable();
-        buttonEdit = new javax.swing.JButton();
         buttonConsult = new javax.swing.JButton();
-        buttonDelete = new javax.swing.JButton();
+        textSearchEmp = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
 
@@ -61,15 +60,20 @@ public class PanelNavigation extends javax.swing.JPanel {
 
             },
             new String [] {
-                "NOMBRE(S)", "APELLIDO(S)", "TIPO DE DOCUMENTO", "NUMERO DE DOCUMENTO", "CORREO"
+                "ID", "NOMBRE(S)", "APELLIDO(S)", "TIPO DE DOCUMENTO", "NUMERO DE DOCUMENTO", "CORREO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        tableEmployed.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tableEmployedMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tableEmployed);
@@ -79,16 +83,10 @@ public class PanelNavigation extends javax.swing.JPanel {
             tableEmployed.getColumnModel().getColumn(2).setResizable(false);
             tableEmployed.getColumnModel().getColumn(3).setResizable(false);
             tableEmployed.getColumnModel().getColumn(4).setResizable(false);
+            tableEmployed.getColumnModel().getColumn(5).setResizable(false);
         }
 
-        buttonEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/editUser.png"))); // NOI18N
-        buttonEdit.setText("EDITAR");
-
         buttonConsult.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/showUser.png"))); // NOI18N
-        buttonConsult.setText("CONSULTAR");
-
-        buttonDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/deleteUser.png"))); // NOI18N
-        buttonDelete.setText("ELIMINAR");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -98,29 +96,24 @@ public class PanelNavigation extends javax.swing.JPanel {
                 .addComponent(jLabel1)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(101, 101, 101)
+                        .addGap(359, 359, 359)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(12, 12, 12)
                                 .addComponent(jLabel3)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 99, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textSearchEmp)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(buttonConsult, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(buttonAddEmployed)
                         .addGap(37, 37, 37))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(buttonEdit)
-                        .addGap(18, 18, 18)
-                        .addComponent(buttonConsult)
-                        .addGap(24, 24, 24)
-                        .addComponent(buttonDelete))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 43, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 79, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37))
         );
         jPanel1Layout.setVerticalGroup(
@@ -133,16 +126,14 @@ public class PanelNavigation extends javax.swing.JPanel {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
-                        .addGap(15, 15, 15)
-                        .addComponent(buttonAddEmployed, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(33, 33, 33)
+                        .addGap(11, 11, 11)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(buttonAddEmployed, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(buttonConsult, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textSearchEmp, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(30, 30, 30)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(buttonEdit)
-                    .addComponent(buttonConsult)
-                    .addComponent(buttonDelete))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(101, Short.MAX_VALUE))
         );
 
         tabPane.addTab("EMPLEADOS", jPanel1);
@@ -151,7 +142,7 @@ public class PanelNavigation extends javax.swing.JPanel {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 686, Short.MAX_VALUE)
+            .addGap(0, 722, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,7 +155,7 @@ public class PanelNavigation extends javax.swing.JPanel {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 686, Short.MAX_VALUE)
+            .addGap(0, 722, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,12 +176,17 @@ public class PanelNavigation extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tableEmployedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableEmployedMouseClicked
+        int row = this.tableEmployed.getSelectedRow();
+        if(row >= 0) {
+           selectedRow = row;
+        }
+    }//GEN-LAST:event_tableEmployedMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton buttonAddEmployed;
     public javax.swing.JButton buttonConsult;
-    public javax.swing.JButton buttonDelete;
-    public javax.swing.JButton buttonEdit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -200,5 +196,6 @@ public class PanelNavigation extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JTabbedPane tabPane;
     public javax.swing.JTable tableEmployed;
+    public javax.swing.JTextField textSearchEmp;
     // End of variables declaration//GEN-END:variables
 }
