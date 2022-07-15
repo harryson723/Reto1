@@ -126,25 +126,35 @@ public class Model {
     public DefaultTableModel updateTableAddress(TableModel modelTable, String info) {
         DefaultTableModel modelTableAux = (DefaultTableModel) modelTable;
         modelTableAux.setRowCount(0);
-         String query = "";
-         if(info.isEmpty()) {
-             query = "SELECT zona, nombreDepartamento FROM direccion";
-         } else {
-             query = "SELECT zona, nombreDepartamento FROM direccion";
-         }
+        String query = "";
+        if (info.isEmpty()) {
+            query = "SELECT nombreSucursal, nombreDepartamento FROM sucursal INNER JOIN direccion "
+                    + "WHERE idDireccion = FK_idDireccion GROUP BY nombreDepartamento, nombreSucursal "
+                    + "ORDER BY nombreDepartamento;";
+        } else {
+            query = "SELECT nombreSucursal, nombreDepartamento FROM sucursal INNER JOIN direccion "
+                    + "WHERE (idDireccion = FK_idDireccion) AND (nombreDepartamento LIKE '%" + info + "%') "
+                    + "GROUP BY nombreDepartamento, nombreSucursal "
+                    + "ORDER BY nombreDepartamento;";
+        }
+       
         try {
-           
+            
             ResultSet rs = conexion.doQuery(query);
+            System.out.println(rs);
             while (rs.next()) {
+                System.out.println("hola");
                 Object[] address = new Object[2];
-                address[0] = rs.getString("zona");
+                address[0] = rs.getString("nombreSucursal");
                 address[1] = rs.getString("nombreDepartamento");
                 modelTableAux.addRow(address);
             }
-            return modelTableAux;
+          
+            
         } catch (Exception e) {
+            System.out.println(e);
         }
-        return null;
+        return modelTableAux;
     }
 
     public int getIdAddress(String departamento, String zona, String tipoCalle, String numero1, String numero2, String numero3) {
@@ -211,7 +221,7 @@ public class Model {
             if (param.isEmpty()) {
                 query = "SELECT * FROM empleado JOIN sucursal WHERE (empleado.FK_idSucursal = sucursal.idSucursal); ";
             } else {
-               query = "SELECT * FROM empleado JOIN sucursal WHERE (nombreEmp LIKE '%" + param + "%' or '%" + param + "%') AND (empleado.FK_idSucursal = sucursal.idSucursal)" ; 
+                query = "SELECT * FROM empleado JOIN sucursal WHERE (nombreEmp LIKE '%" + param + "%' or '%" + param + "%') AND (empleado.FK_idSucursal = sucursal.idSucursal)";
             }
 
             ResultSet rs = conexion.doQuery(query);

@@ -51,8 +51,8 @@ public class Controller implements ActionListener, MouseListener {
         indexHeight = 419;
         int personTableWidth = 763;
         int personTableHeight = 385;
-        int panelNavigationWidth = 753;
-        int panelNavigationHeight = 414;
+        int panelNavigationWidth = 813;
+        int panelNavigationHeight = 454;
         int panelChangeWidth = 493;
         int panelChangenHeight = 345;
         index.setVisible(true);
@@ -93,8 +93,9 @@ public class Controller implements ActionListener, MouseListener {
         showUserForm.buttonUpdate.addActionListener(this);
 
         // cargar las tablas
-        panelNavigation.tableAddress.setModel(model.updateTableAddress(panelNavigation.tableAddress.getModel(), ""));
+       
         panelNavigation.tableEmployed.setModel(model.updateTableEmployed(panelNavigation.tableEmployed.getModel(), ""));
+         panelNavigation.tableAddress.setModel(model.updateTableAddress(panelNavigation.tableAddress.getModel(), ""));
     }
 
     private void showWindow(JPanel panel) {
