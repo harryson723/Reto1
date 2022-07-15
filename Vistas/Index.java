@@ -5,7 +5,7 @@
  */
 package Vistas;
 
-import Classes.Conexion;
+import Modelo.Conexion;
 import Classes.Empleado;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,59 +23,15 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author YanethM
  */
-public class Index extends javax.swing.JFrame implements ActionListener, MouseListener {
+public class Index extends javax.swing.JFrame {
 
-    public PersonTable personTable;
-    public PanelNavigation panelNavigation;
-    public PanelChangePass panelChangePass;
-    public Conexion conexion = new Conexion();
-    public String user = "MisionTic", pass = "Ciclo2";
-    public int indexWidth, indexHeight;
+
 
     // variables de tamano de la ventana
     public Index() {
         initComponents();
         this.setLocationRelativeTo(null);
-        // tamanos de las vistas
-        indexWidth = this.getWidth();
-        indexHeight = this.getHeight();
-        int personTableWidth = 763;
-        int personTableHeight = 385;
-        int panelNavigationWidth = 673;
-        int panelNavigationHeight = 414;
-        int panelChangeWidth = 493;
-        int panelChangenHeight = 345;
-        // inicializar vistas
-        personTable = new PersonTable();
-        panelNavigation = new PanelNavigation();
-        panelChangePass = new PanelChangePass();
-
-        // anadir al jframe
-        personTable.setBounds(0, 0, personTableWidth, personTableHeight);
-        personTable.setVisible(false);
-        panelNavigation.setBounds(0, 0, panelNavigationWidth, panelNavigationHeight);
-        panelNavigation.setVisible(false);
-        panelChangePass.setBounds(0, 0, panelChangeWidth, panelChangenHeight);
-        panelChangePass.setVisible(false);
-        this.add(personTable);
-        this.add(panelNavigation);
-        this.add(panelChangePass);
-        // anadir eventos a los botones
-        this.buttonLogin.addActionListener(this);
-        this.buttonChangePass.addActionListener(this);
-        this.panelChangePass.buttonChangePass.addActionListener(this);
-        this.personTable.buttonCancel.addActionListener(this);
-        this.personTable.buttonCreate.addActionListener(this);
-        this.panelNavigation.buttonAddEmployed.addActionListener(this);
-
-        this.panelNavigation.buttonConsult.addActionListener(this);
-
-        this.panelNavigation.tableEmployed.addMouseListener(this);
-
-        // listar empleados
-        showEmployedTable();
-
-    }
+     }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -193,7 +149,7 @@ public class Index extends javax.swing.JFrame implements ActionListener, MouseLi
     }//GEN-LAST:event_buttonLoginActionPerformed
 
     private void buttonChangePassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChangePassActionPerformed
-        // TODO add your handling code here:
+       
     }//GEN-LAST:event_buttonChangePassActionPerformed
 
     /**
@@ -242,50 +198,17 @@ public class Index extends javax.swing.JFrame implements ActionListener, MouseLi
     public javax.swing.JTextField textUserName;
     public javax.swing.JPasswordField textUserPass;
     // End of variables declaration//GEN-END:variables
-
-    private void showWindow(JPanel panel) {
-        this.panelPrincipal.setVisible(false);
-        this.personTable.setVisible(false);
-        this.panelNavigation.setVisible(false);
-        this.panelChangePass.setVisible(false);
-        panel.setVisible(true);
-        this.setSize(panel.getWidth(), panel.getHeight() + 20);
-        this.setLocationRelativeTo(null);
-    }
+/*
 
     @Override
     public void actionPerformed(ActionEvent e) {
         Object event = e.getSource();
         // evento del boton de inicio de sesion
-        if (event == this.buttonLogin) {
-            if (this.textUserName.getText().isEmpty() && this.textUserPass.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Error ingrese un usuario y contraseña", "Error Inicio de sesion", 0);
-            } else if (this.textUserName.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Error ingrese un usuario", "Error Inicio de sesion", 0);
-            } else if (this.textUserPass.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Error ingrese una contraseña", "Error Inicio de sesion", 0);
-            } else {
-                if (this.textUserName.getText().equals(user) && this.textUserPass.getText().equals(pass)) {
-                    JOptionPane.showMessageDialog(null, "Bienvenido a la aplicacion", "Login", 1);
-                    showWindow(panelNavigation);
-                    showEmployedTable();
-                } else {
-                    JOptionPane.showMessageDialog(null, "Error ingrese un usuario y contraseña validos", "Error Inicio de sesion", 0);
-                }
-
-            }
-        }
+       
 
         // cambiar contrasena
         if (event == this.panelChangePass.buttonChangePass) {
-            if (this.panelChangePass.textPass.getText().equals(this.panelChangePass.textPass1.getText())) {
-                pass = this.panelChangePass.textPass.getText();
-                JOptionPane.showMessageDialog(null, "Cambio de contraseña exitoso");
-                this.panelPrincipal.setSize(indexWidth, indexHeight);
-                showWindow(this.panelPrincipal);
-            } else {
-                JOptionPane.showMessageDialog(null, "Error ingrese contraseñas iguales");
-            }
+            
         }
 
         // cambio de paneles por boton
@@ -303,11 +226,6 @@ public class Index extends javax.swing.JFrame implements ActionListener, MouseLi
 
         // ingresar un nuevo empleado
         if (event == this.personTable.buttonCreate) {
-            String firtsName = this.personTable.textFirtsName.getText();
-            String lastName = this.personTable.textLastName.getText();
-            String typeDocument = this.personTable.comboDocumentType.getItemAt(this.personTable.comboDocumentType.getSelectedIndex());
-            String document = this.personTable.textDocument.getText();
-            String email = this.personTable.textMail.getText();
 
             if (firtsName.isEmpty() || lastName.isEmpty() || typeDocument.isEmpty() || document.isEmpty() || email.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Ingrese todos los datos", "Error al validar informacion", 2);
@@ -332,88 +250,14 @@ public class Index extends javax.swing.JFrame implements ActionListener, MouseLi
         if (this.panelNavigation.textSearchEmp.getText().isEmpty()) {
             query = "SELECT * FROM `empleados`";
         } else {
-           query = "SELECT * FROM `empleados` WHERE nombreEmp LIKE '%" + this.panelNavigation.textSearchEmp.getText() + "%' or '%" + this.panelNavigation.textSearchEmp.getText() + "%'" ; 
+          
         }
-        try {
-            ResultSet rs = conexion.doQuery(query);
-            Object[] empleados = new Object[6];
-            DefaultTableModel contenidoTabla = (DefaultTableModel) this.panelNavigation.tableEmployed.getModel();
-            contenidoTabla.setRowCount(0);
-            while (rs.next()) {
-                empleados[0] = rs.getString("idEmp");
-                empleados[1] = rs.getString("nombreEmp");
-                empleados[2] = rs.getString("apellidos");
-                empleados[3] = rs.getString("tipoDocumento");
-                empleados[4] = rs.getString("documento");
-                empleados[5] = rs.getString("correo");
-
-                contenidoTabla.addRow(empleados);
-            }
-
-        } catch (SQLException e) {
-
-        }
+       
     }
 
-    private void insertEmployed(Empleado employed) {
-        String query = "INSERT INTO `empleados`(`nombreEmp`, `apellidos`, `tipoDocumento`, `documento`, `correo`) \n"
-                + "VALUES  ( \"" + employed.getNombre() + "\", \"" + employed.getApellidos() + "\", \"" + employed.getTipoDocumento() + "\", \"" + employed.getDocumento() + "\", \"" + employed.getEmail() + "\")";
-        try {
-            Connection cn = conexion.getConnection();
-            Statement st = cn.createStatement();
-            st.executeUpdate(query);
+  
 
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-    }
 
-    private ShowUserForm showUserInfo() {
 
-        ShowUserForm showUserForm = new ShowUserForm(this, rootPaneCheckingEnabled);
-
-        String idEmployed = (String) this.panelNavigation.tableEmployed.getValueAt(this.panelNavigation.selectedRow, 0);
-        String firtsNaame = (String) this.panelNavigation.tableEmployed.getValueAt(this.panelNavigation.selectedRow, 1);
-        String lastName = (String) this.panelNavigation.tableEmployed.getValueAt(this.panelNavigation.selectedRow, 2);
-        String document = (String) this.panelNavigation.tableEmployed.getValueAt(this.panelNavigation.selectedRow, 4);
-        String mail = (String) this.panelNavigation.tableEmployed.getValueAt(this.panelNavigation.selectedRow, 5);
-        showUserForm.textId.setText(idEmployed);
-        showUserForm.textFirtsName.setText(firtsNaame);
-        showUserForm.textLastName.setText(lastName);
-        showUserForm.textDocument.setText(document);
-        showUserForm.textMail.setText(mail);
-
-        return showUserForm;
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        Object event = e.getSource();
-        if (event == this.panelNavigation.tableEmployed) {
-            showUserInfo().setVisible(true);
-            showEmployedTable();
-        }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        Object event = e.getSource();
-        if (event == this.panelNavigation.tableEmployed) {
-            showEmployedTable();
-        }
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
+*/
 }

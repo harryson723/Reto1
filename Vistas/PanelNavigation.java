@@ -5,6 +5,11 @@
  */
 package Vistas;
 
+import Modelo.EnumDepartamento;
+import Modelo.EnumTipoCalle;
+import Modelo.EnumZona;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -12,10 +17,14 @@ import javax.swing.JOptionPane;
  * @author HarryFora
  */
 public class PanelNavigation extends javax.swing.JPanel {
-
-    public int selectedRow = -1;
+    private ComboBoxModel enumZona, enumTipoCalle, enumDepartamento;
     public PanelNavigation() {
+        enumZona = new  DefaultComboBoxModel(EnumZona.values());
+        enumTipoCalle = new  DefaultComboBoxModel(EnumTipoCalle.values());
+        enumDepartamento = new  DefaultComboBoxModel(EnumDepartamento.values());
         initComponents();
+        
+        
     }
 
     /**
@@ -27,8 +36,28 @@ public class PanelNavigation extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollBar1 = new javax.swing.JScrollBar();
         tabPane = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        panelSucursal = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        textNumero1 = new javax.swing.JTextField();
+        textDepartamento = new javax.swing.JComboBox<>();
+        textTipoCalle = new javax.swing.JComboBox<>();
+        textZona = new javax.swing.JComboBox<>();
+        textNumero2 = new javax.swing.JTextField();
+        textNumero3 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        buttonAddAddress = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tableAddress = new javax.swing.JTable();
+        buttonConsultDeparment = new javax.swing.JButton();
+        textConsultDeparment = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        panelEmpleados = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -37,12 +66,146 @@ public class PanelNavigation extends javax.swing.JPanel {
         tableEmployed = new javax.swing.JTable();
         buttonConsult = new javax.swing.JButton();
         textSearchEmp = new javax.swing.JTextField();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
 
         tabPane.setBackground(new java.awt.Color(19, 60, 72));
+        tabPane.setForeground(new java.awt.Color(255, 255, 255));
 
-        jPanel1.setBackground(new java.awt.Color(19, 60, 72));
+        panelSucursal.setBackground(new java.awt.Color(19, 60, 72));
+
+        jLabel4.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("DIRECCION");
+
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("DEPARTAMENTO: ");
+
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("TIPO DE CALLE: ");
+
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("ZONA:");
+
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("N#");
+
+        textDepartamento.setModel(enumDepartamento);
+
+        textTipoCalle.setModel(enumTipoCalle);
+
+        textZona.setModel(enumZona);
+
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("---");
+
+        buttonAddAddress.setText("AÑADIR");
+
+        tableAddress.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "DEPARTAMENTO", "ZONA"
+            }
+        ));
+        jScrollPane2.setViewportView(tableAddress);
+
+        buttonConsultDeparment.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/showUser.png"))); // NOI18N
+
+        jLabel10.setText("DEPARTAMENTO: ");
+
+        javax.swing.GroupLayout panelSucursalLayout = new javax.swing.GroupLayout(panelSucursal);
+        panelSucursal.setLayout(panelSucursalLayout);
+        panelSucursalLayout.setHorizontalGroup(
+            panelSucursalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSucursalLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelSucursalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelSucursalLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel4))
+                    .addGroup(panelSucursalLayout.createSequentialGroup()
+                        .addGroup(panelSucursalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(panelSucursalLayout.createSequentialGroup()
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(textDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelSucursalLayout.createSequentialGroup()
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(textTipoCalle, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelSucursalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(textNumero1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelSucursalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelSucursalLayout.createSequentialGroup()
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(textNumero2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(textNumero3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(buttonAddAddress, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(panelSucursalLayout.createSequentialGroup()
+                                .addGap(3, 3, 3)
+                                .addComponent(textZona, 0, 129, Short.MAX_VALUE)))))
+                .addGroup(panelSucursalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelSucursalLayout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(textConsultDeparment)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(buttonConsultDeparment, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSucursalLayout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(23, 23, 23))
+        );
+        panelSucursalLayout.setVerticalGroup(
+            panelSucursalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelSucursalLayout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addGroup(panelSucursalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(panelSucursalLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(25, 25, 25))
+                    .addGroup(panelSucursalLayout.createSequentialGroup()
+                        .addGroup(panelSucursalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(panelSucursalLayout.createSequentialGroup()
+                                .addGap(11, 11, 11)
+                                .addGroup(panelSucursalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(textConsultDeparment)
+                                    .addComponent(jLabel10)))
+                            .addComponent(buttonConsultDeparment, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)))
+                .addGroup(panelSucursalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelSucursalLayout.createSequentialGroup()
+                        .addGroup(panelSucursalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel5)
+                            .addComponent(textDepartamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7)
+                            .addComponent(textZona, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(23, 23, 23)
+                        .addGroup(panelSucursalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel8)
+                            .addComponent(textNumero1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textNumero2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(textNumero3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9)
+                            .addComponent(textTipoCalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(56, 56, 56)
+                        .addComponent(buttonAddAddress))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(83, Short.MAX_VALUE))
+        );
+
+        tabPane.addTab("SUCURSALES", panelSucursal);
+
+        panelEmpleados.setBackground(new java.awt.Color(19, 60, 72));
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo.png"))); // NOI18N
 
@@ -60,11 +223,11 @@ public class PanelNavigation extends javax.swing.JPanel {
 
             },
             new String [] {
-                "ID", "NOMBRE(S)", "APELLIDO(S)", "TIPO DE DOCUMENTO", "NUMERO DE DOCUMENTO", "CORREO"
+                "ID", "NOMBRE(S)", "APELLIDO(S)", "TIPO DE DOCUMENTO", "NUMERO DE DOCUMENTO", "CORREO", "SUCURSAL"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -88,22 +251,22 @@ public class PanelNavigation extends javax.swing.JPanel {
 
         buttonConsult.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/showUser.png"))); // NOI18N
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout panelEmpleadosLayout = new javax.swing.GroupLayout(panelEmpleados);
+        panelEmpleados.setLayout(panelEmpleadosLayout);
+        panelEmpleadosLayout.setHorizontalGroup(
+            panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEmpleadosLayout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelEmpleadosLayout.createSequentialGroup()
                         .addGap(359, 359, 359)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(panelEmpleadosLayout.createSequentialGroup()
                                 .addGap(12, 12, 12)
                                 .addComponent(jLabel3)))
-                        .addGap(0, 99, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 112, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEmpleadosLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(textSearchEmp)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -111,58 +274,32 @@ public class PanelNavigation extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(buttonAddEmployed)
                         .addGap(37, 37, 37))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 79, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 606, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37))
+            .addGroup(panelEmpleadosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        panelEmpleadosLayout.setVerticalGroup(
+            panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelEmpleadosLayout.createSequentialGroup()
+                .addGroup(panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(panelEmpleadosLayout.createSequentialGroup()
                         .addGap(29, 29, 29)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel3)
                         .addGap(11, 11, 11)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(buttonAddEmployed, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(buttonConsult, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(textSearchEmp, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(30, 30, 30)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addContainerGap(39, Short.MAX_VALUE))
         );
 
-        tabPane.addTab("EMPLEADOS", jPanel1);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 722, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 387, Short.MAX_VALUE)
-        );
-
-        tabPane.addTab("LINEA DE VENTAS", jPanel2);
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 722, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 387, Short.MAX_VALUE)
-        );
-
-        tabPane.addTab("PRODUCTOS", jPanel3);
+        tabPane.addTab("EMPLEADOS", panelEmpleados);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -177,25 +314,43 @@ public class PanelNavigation extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tableEmployedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableEmployedMouseClicked
-        int row = this.tableEmployed.getSelectedRow();
-        if(row >= 0) {
-           selectedRow = row;
-        }
+
     }//GEN-LAST:event_tableEmployedMouseClicked
 
 
+    // </editor-fold>                        
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton buttonAddAddress;
     public javax.swing.JButton buttonAddEmployed;
     public javax.swing.JButton buttonConsult;
+    public javax.swing.JButton buttonConsultDeparment;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    public javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JScrollBar jScrollBar1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    public javax.swing.JPanel panelEmpleados;
+    public javax.swing.JPanel panelSucursal;
     public javax.swing.JTabbedPane tabPane;
+    public javax.swing.JTable tableAddress;
     public javax.swing.JTable tableEmployed;
+    public javax.swing.JTextField textConsultDeparment;
+    public javax.swing.JComboBox<String> textDepartamento;
+    public javax.swing.JTextField textNumero1;
+    public javax.swing.JTextField textNumero2;
+    public javax.swing.JTextField textNumero3;
     public javax.swing.JTextField textSearchEmp;
+    public javax.swing.JComboBox<String> textTipoCalle;
+    public javax.swing.JComboBox<String> textZona;
     // End of variables declaration//GEN-END:variables
 }

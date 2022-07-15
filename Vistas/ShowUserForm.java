@@ -5,7 +5,7 @@
  */
 package Vistas;
 
-import Classes.Conexion;
+import Modelo.Conexion;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,16 +17,13 @@ import javax.swing.JOptionPane;
  *
  * @author HarryFora
  */
-public class ShowUserForm extends javax.swing.JDialog implements ActionListener {
+public class ShowUserForm extends javax.swing.JDialog  {
 
-    public Conexion conexion = new Conexion();
 
     public ShowUserForm(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(parent);
-        this.buttonUpdate.addActionListener(this);
-         this.buttonDelete.addActionListener(this);
     }
 
     /**
@@ -199,7 +196,7 @@ public class ShowUserForm extends javax.swing.JDialog implements ActionListener 
     }//GEN-LAST:event_textDocumentActionPerformed
 
     private void buttonBackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonBackActionPerformed
-        this.dispose();
+
     }//GEN-LAST:event_buttonBackActionPerformed
 
     /**
@@ -245,9 +242,9 @@ public class ShowUserForm extends javax.swing.JDialog implements ActionListener 
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonBack;
-    private javax.swing.JButton buttonDelete;
-    private javax.swing.JButton buttonUpdate;
+    public javax.swing.JButton buttonBack;
+    public javax.swing.JButton buttonDelete;
+    public javax.swing.JButton buttonUpdate;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -262,31 +259,5 @@ public class ShowUserForm extends javax.swing.JDialog implements ActionListener 
     public javax.swing.JTextField textMail;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        Object event = e.getSource();
-        if (this.buttonUpdate == event) {
-            if (this.textFirtsName.getText().isEmpty() || this.textMail.getText().isEmpty() || this.textId.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(rootPane, "Por favor no deje ningun campo vacio");
-            } else {
-                try {
-                    conexion.doUpdate("UPDATE `empleados` set `nombreEmp`= '" + this.textFirtsName.getText() + "', `apellidos`= '"
-                            + this.textLastName.getText() + "', `correo`= '" + this.textMail.getText() + "' WHERE `idEmp` = " + this.textId.getText());
-                    JOptionPane.showMessageDialog(rootPane, "Datos Actualizados");
-                    this.dispose();
-                } catch (HeadlessException | ClassNotFoundException error) {
-                    
-                }
-            }
-        }
-        if(this.buttonDelete == event) {
-            try {
-                    conexion.doUpdate("DELETE FROM  `empleados` " + " WHERE `idEmp` = " + this.textId.getText());
-                    JOptionPane.showMessageDialog(rootPane, "Empleado " + this.textFirtsName.getText() + " Eliminado");
-                    this.dispose();
-                } catch (HeadlessException | ClassNotFoundException error) {
-                    
-                }
-        }
-    }
+   
 }
