@@ -8,7 +8,7 @@ public enum EnumTipoDocumento {
     CedulaExtranjera,
     TarjetaIdentidad,
     Pasaporte,
-    TarjetaMilitar,
+    LibretaMilitar,
     PermisoEspecialPersona,
     Otro
 }

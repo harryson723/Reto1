@@ -1,6 +1,7 @@
 package Modelo;
 
 import Controller.Employed;
+import Vistas.PersonTable;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -128,29 +129,34 @@ public class Model {
         modelTableAux.setRowCount(0);
         String query = "";
         if (info.isEmpty()) {
-            query = "SELECT nombreSucursal, nombreDepartamento FROM sucursal INNER JOIN direccion "
+            query = "SELECT nombreSucursal, nombreDepartamento, "
+                    + "CONCAT('Zona: ', zona, '. ', tipoCalle, ' ', numero1, ' #No', numero2, ' - ', numero3) AS direccionCom "
+                    + "FROM sucursal INNER JOIN direccion "
                     + "WHERE idDireccion = FK_idDireccion GROUP BY nombreDepartamento, nombreSucursal "
                     + "ORDER BY nombreDepartamento;";
         } else {
-            query = "SELECT nombreSucursal, nombreDepartamento FROM sucursal INNER JOIN direccion "
+            System.out.println(info);
+            query = "SELECT nombreSucursal, nombreDepartamento "
+                    //                    + "CONCAT('Zona: ', zona, '. ', tipoCalle, ' ', numero1, ' #No', numero2, ' - ', numero3) AS direccionCom "
+                    + "FROM sucursal INNER JOIN direccion "
                     + "WHERE (idDireccion = FK_idDireccion) AND (nombreDepartamento LIKE '%" + info + "%') "
                     + "GROUP BY nombreDepartamento, nombreSucursal "
                     + "ORDER BY nombreDepartamento;";
         }
-       
+
         try {
-            
+
             ResultSet rs = conexion.doQuery(query);
             System.out.println(rs);
             while (rs.next()) {
-                System.out.println("hola");
-                Object[] address = new Object[2];
+
+                Object[] address = new Object[3];
                 address[0] = rs.getString("nombreSucursal");
                 address[1] = rs.getString("nombreDepartamento");
+                address[2] = rs.getString("direccionCom");
                 modelTableAux.addRow(address);
             }
-          
-            
+
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -221,21 +227,20 @@ public class Model {
             if (param.isEmpty()) {
                 query = "SELECT * FROM empleado JOIN sucursal WHERE (empleado.FK_idSucursal = sucursal.idSucursal); ";
             } else {
-                query = "SELECT * FROM empleado JOIN sucursal WHERE (nombreEmp LIKE '%" + param + "%' or '%" + param + "%') AND (empleado.FK_idSucursal = sucursal.idSucursal)";
+                query = "SELECT * FROM empleado JOIN sucursal WHERE (nombreEmp LIKE '%" + param + "%' or apellidos LIKE '%" + param + "%') AND (empleado.FK_idSucursal = sucursal.idSucursal)";
             }
 
             ResultSet rs = conexion.doQuery(query);
-            Object[] empleados = new Object[7];
+            Object[] empleados = new Object[6];
             DefaultTableModel modelTableAux = (DefaultTableModel) modelTable;
             modelTableAux.setRowCount(0);
             while (rs.next()) {
-                empleados[0] = rs.getString("idEmp");
-                empleados[1] = rs.getString("nombreEmp");
-                empleados[2] = rs.getString("apellidos");
-                empleados[3] = rs.getString("tipoDocumento");
-                empleados[4] = rs.getString("documento");
-                empleados[5] = rs.getString("correo");
-                empleados[6] = rs.getString("nombreSucursal");
+                empleados[0] = rs.getString("nombreEmp");
+                empleados[1] = rs.getString("apellidos");
+                empleados[2] = rs.getString("tipoDocumento");
+                empleados[3] = rs.getString("documento");
+                empleados[4] = rs.getString("correo");
+                empleados[5] = rs.getString("nombreSucursal");
 
                 modelTableAux.addRow(empleados);
 
@@ -274,6 +279,106 @@ public class Model {
             JOptionPane.showMessageDialog(null, "Actualizacion exitosa");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error interno");
+        }
+    }
+
+    public int getIdEmployed(String firtsNaame, String lastName, String document, String mail, String sucursal) {
+        try {
+            String query = "SELECT idEmp FROM empleado WHERE documento = " + document;
+            ResultSet rs = conexion.doQuery(query);
+            while (rs.next()) {
+                return rs.getInt("idEmp");
+            }
+        } catch (Exception e) {
+        }
+        return 0;
+    }
+
+    public int getIdSucursal(String sucursalName, String sucursalDepart) {
+        try {
+            String query = "SELECT idSucursal FROM sucursal JOIN direccion "
+                    + " WHERE (sucursal.FK_idDireccion = direccion.idDireccion) and (nombreSucursal = ?) and (nombreDepartamento = ?)";
+            Connection con = conexion.getConnection();
+            PreparedStatement pst = con.prepareStatement(query);
+            pst.setString(1, sucursalName);
+            pst.setString(2, sucursalDepart);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                return rs.getInt("idSucursal");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return 0;
+    }
+
+    public String[] getSucursalInfo(int idSucursal) {
+        try {
+            String[] data = new String[7];
+            String query = "SELECT nombreSucursal, nombreDepartamento, zona, tipoCalle, numero1, numero2, "
+                    + "numero3 FROM `sucursal` INNER JOIN `direccion` WHERE FK_idDireccion = idDireccion "
+                    + "AND idSucursal = " + idSucursal;
+            ResultSet rs = conexion.doQuery(query);
+            while (rs.next()) {
+                data[0] = rs.getString("nombreSucursal");
+                data[1] = rs.getString("nombreDepartamento");
+                data[2] = rs.getString("zona");
+                data[3] = rs.getString("tipoCalle");
+                data[4] = rs.getString("numero1");
+                data[5] = rs.getString("numero2");
+                data[6] = rs.getString("numero3");
+            }
+            return data;
+        } catch (Exception e) {
+        }
+        return new String[0];
+    }
+
+    public void updateSucursalInfo(String sucursal, String numero1, String numero2, String numero3, String calle, String zona, String departamento, int idSucursal) {
+        try {
+            String query = "UPDATE sucursal SET nombreSucursal = '" + sucursal + "' WHERE idSucursal = " + idSucursal;
+            conexion.doUpdate(query);
+            query = "SELECT FK_idDireccion FROM sucursal WHERE idSucursal = " + idSucursal;
+            ResultSet rs = conexion.doQuery(query);
+            int idDireccion = 0;
+            while (rs.next()) {
+                idDireccion = rs.getInt("FK_idDireccion");
+            }
+            query = "UPDATE direccion SET numero1 = ?, numero2 = ? , numero3 = ?, zona = ?, tipoCalle = ?, nombreDepartamento = ? WHERE idDireccion = " + idDireccion;
+            Connection cn = conexion.getConnection();
+            PreparedStatement pst = cn.prepareStatement(query);
+            pst.setString(1, numero1);
+            pst.setString(2, numero2);
+            pst.setString(3, numero3);
+            pst.setString(4, zona);
+            pst.setString(5, calle);
+            pst.setString(6, departamento);
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Informacion actualizada");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void deleteSucursal(int idSucursal) {
+        try {
+            if (JOptionPane.showConfirmDialog(null, "Quiere eliminar la sucursal junto a los empleados y la direccion?") == JOptionPane.YES_OPTION) {
+                String query = "SELECT FK_idDireccion FROM sucursal WHERE idSucursal = " + idSucursal;
+                ResultSet rs = conexion.doQuery(query);
+                int idDireccion = 0;
+                while (rs.next()) {
+                    idDireccion = rs.getInt("FK_idDireccion");
+                }
+                query = "DELETE FROM empleado WHERE FK_idSucursal = " + idSucursal;
+                conexion.doUpdate(query);
+                query = "DELETE FROM sucursal WHERE idSucursal = " + idSucursal;
+                conexion.doUpdate(query);
+                query = "DELETE FROM direccion WHERE idDireccion = " + idSucursal;
+                conexion.doUpdate(query);
+                JOptionPane.showMessageDialog(null, "Se elimino la sucursal junto a todos sus empleados");
+            } 
+        } catch (Exception e) {
         }
     }
 
