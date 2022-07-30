@@ -8,14 +8,16 @@ public class Employed {
     private String document;
     private String documentType;
     private int employedId;
+    private JobType employedType;
 
-    public Employed(String firtsNames, String lastNames, String mail, String document, String documentType, int employedId) {
+    public Employed(String firtsNames, String lastNames, String mail, String document, String documentType, JobType employedType ,int employedId) {
         this.firtsNames = firtsNames;
         this.lastNames = lastNames;
         this.mail = mail;
         this.document = document;
         this.documentType = documentType;
         this.employedId = employedId;
+         this.employedType = employedType;
     }
 
     public String getFirtsNames() {
@@ -65,6 +67,18 @@ public class Employed {
     public void setEmployedId(int employedId) {
         this.employedId = employedId;
     }
+
+    public JobType getEmployedType() {
+        return employedType;
+    }
+
+    public void setEmployedType(JobType employedType) {
+        this.employedType = employedType;
+    }
+    
+    
+    
+    
     
     
 }

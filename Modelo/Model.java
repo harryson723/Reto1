@@ -1,19 +1,21 @@
 package Modelo;
 
 import Controller.Employed;
-import Vistas.PersonTable;
+import Controller.JobType;
+import Controller.Sucursal;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 public class Model {
 
-    private String userCorrect = "1";
-    private String passCorrect = "1";
+    private String userCorrect = "MisionTIC";
+    private String passCorrect = "Ciclo2";
     private Conexion conexion;
 
     public Model() {
@@ -55,12 +57,12 @@ public class Model {
         return false;
     }
 
-    public void createEmployed(Employed employed, ArrayList<Object[]> arreglo, String sucursal) {
+    public void createEmployed(Employed employed, Sucursal sucursal) {
         if (employed.getFirtsNames().isEmpty() || employed.getLastNames().isEmpty() || employed.getDocument().isEmpty() || employed.getDocument().isEmpty() || employed.getMail().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Ingrese todos los datos", "Error al validar informacion", 2);
         } else {
             // crear un empleado con la informacion dada
-            if (insertEmployed(employed, arreglo, sucursal)) {
+            if (insertEmployed(employed, sucursal)) {
                 JOptionPane.showMessageDialog(null, "Registro Exitoso", "Registro exitoso", 1);
             } else {
                 JOptionPane.showMessageDialog(null, "Error con la base de datos", "Error con la base de datos", 0);
@@ -69,18 +71,11 @@ public class Model {
     }
 
     // insertar informacion en la base de datos
-    private boolean insertEmployed(Employed employed, ArrayList<Object[]> arreglo, String sucursal) {
-        int n = arreglo.size();
-        int idSucursal = 0;
-        for (int i = 0; i < n; i++) {
-            if (arreglo.get(i)[1].equals(sucursal)) {
-                idSucursal = Integer.parseInt(arreglo.get(i)[0].toString());
-                break;
-            }
-        }
+    private boolean insertEmployed(Employed employed, Sucursal sucursal) {
+        
         try {
-            String query = "INSERT INTO empleado (nombreEmp, apellidos, tipoDocumento, documento, correo, FK_idSucursal) "
-                    + "VALUES (?,?,?,?,?,?)";
+            String query = "INSERT INTO empleado (nombreEmp, apellidos, tipoDocumento, documento, correo, FK_idSucursal, FK_idPuestoTrabajo) "
+                    + "VALUES (?,?,?,?,?,?,?)";
             Connection con = conexion.getConnection();
             PreparedStatement pst = con.prepareStatement(query);
             pst.setString(1, employed.getFirtsNames());
@@ -88,7 +83,8 @@ public class Model {
             pst.setString(3, employed.getDocumentType());
             pst.setString(4, employed.getDocument());
             pst.setString(5, employed.getMail());
-            pst.setInt(6, idSucursal);
+            pst.setInt(6, sucursal.getIdSucursal());
+            pst.setInt(7, employed.getEmployedType().getIdJobType());
             pst.executeUpdate();
             return true;
         } catch (Exception e) {
@@ -136,8 +132,8 @@ public class Model {
                     + "ORDER BY nombreDepartamento;";
         } else {
             System.out.println(info);
-            query = "SELECT nombreSucursal, nombreDepartamento "
-                    //                    + "CONCAT('Zona: ', zona, '. ', tipoCalle, ' ', numero1, ' #No', numero2, ' - ', numero3) AS direccionCom "
+            query = "SELECT nombreSucursal, nombreDepartamento, "
+                    + "CONCAT('Zona: ', zona, '. ', tipoCalle, ' ', numero1, ' #No', numero2, ' - ', numero3) AS direccionCom "
                     + "FROM sucursal INNER JOIN direccion "
                     + "WHERE (idDireccion = FK_idDireccion) AND (nombreDepartamento LIKE '%" + info + "%') "
                     + "GROUP BY nombreDepartamento, nombreSucursal "
@@ -215,23 +211,39 @@ public class Model {
             return arreglo;
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            JOptionPane.showMessageDialog(null, "Error interno");
+            if (e.getMessage().equals("Index 0 out of bounds for length 0")) {
+                JOptionPane.showMessageDialog(null, "Primero ingrese al menos una sucursal");
+            } else {
+                JOptionPane.showMessageDialog(null, "Error interno");
+            }
+
         }
         return null;
     }
 
-    public TableModel updateTableEmployed(TableModel modelTable, String param) {
+    public TableModel updateTableEmployed(TableModel modelTable, String param, boolean sucu) {
 
         try {
             String query = "";
             if (param.isEmpty()) {
-                query = "SELECT * FROM empleado JOIN sucursal WHERE (empleado.FK_idSucursal = sucursal.idSucursal); ";
+                query = "SELECT * FROM empleado INNER JOIN sucursal, puestotrabajo "
+                        + "WHERE (sucursal.idSucursal = empleado.FK_idSucursal) "
+                        + "AND (empleado.FK_idPuestoTrabajo = puestotrabajo.idPuestoTrabajo)";
+            } else if (sucu) {
+                query = "SELECT * FROM empleado INNER JOIN sucursal, puestotrabajo "
+                        + "WHERE (sucursal.idSucursal = empleado.FK_idSucursal) "
+                        + "AND (empleado.FK_idPuestoTrabajo = puestotrabajo.idPuestoTrabajo) "
+                        + "AND (sucursal.nombreSucursal = '"+ param + "') ";
             } else {
-                query = "SELECT * FROM empleado JOIN sucursal WHERE (nombreEmp LIKE '%" + param + "%' or apellidos LIKE '%" + param + "%') AND (empleado.FK_idSucursal = sucursal.idSucursal)";
+               query = "SELECT * FROM empleado INNER JOIN sucursal, puestotrabajo "
+                        + "WHERE (sucursal.idSucursal = empleado.FK_idSucursal) "
+                        + "AND (empleado.FK_idPuestoTrabajo = puestotrabajo.idPuestoTrabajo) "
+                        + "AND (empleado.nombreEmp LIKE '%"+ param + "%' "
+                        + "OR empleado.apellidos LIKE '%"+ param + "%')";
             }
 
             ResultSet rs = conexion.doQuery(query);
-            Object[] empleados = new Object[6];
+            Object[] empleados = new Object[7];
             DefaultTableModel modelTableAux = (DefaultTableModel) modelTable;
             modelTableAux.setRowCount(0);
             while (rs.next()) {
@@ -241,8 +253,9 @@ public class Model {
                 empleados[3] = rs.getString("documento");
                 empleados[4] = rs.getString("correo");
                 empleados[5] = rs.getString("nombreSucursal");
-
+                empleados[6] = rs.getString("nombrePuestoTrabajo");
                 modelTableAux.addRow(empleados);
+                
 
             }
             return modelTableAux;
@@ -377,9 +390,59 @@ public class Model {
                 query = "DELETE FROM direccion WHERE idDireccion = " + idSucursal;
                 conexion.doUpdate(query);
                 JOptionPane.showMessageDialog(null, "Se elimino la sucursal junto a todos sus empleados");
-            } 
+            }
         } catch (Exception e) {
         }
+    }
+
+    public void insertJob(int idSucursal, String sucursal, String puesto, String salario) {
+
+        try {
+            String query = "INSERT INTO puestotrabajo (nombrePuestoTrabajo, salario, FK_idSucursal) VALUES (?,?,?)";
+            Connection cn = conexion.getConnection();
+            PreparedStatement pst = cn.prepareStatement(query);
+            pst.setString(1, puesto);
+            pst.setFloat(2, Float.valueOf(salario));
+            pst.setInt(3, idSucursal);
+            pst.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Puesto ingresado en la base de datos");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public ArrayList<JobType> getComboJobType(Sucursal sucursal) {
+
+        try {
+            String query = "SELECT * FROM `puestotrabajo` "
+                    + "INNER JOIN sucursal WHERE "
+                    + "(sucursal.idSucursal = puestotrabajo.FK_idSucursal) and (sucursal.idSucursal = " + sucursal.getIdSucursal() + ")";
+            ResultSet rs = conexion.doQuery(query);
+            if (!rs.next()) {
+                JOptionPane.showMessageDialog(null, "Ingrese primero un puesto de trabajo en la sucursal");
+            } else {
+                ArrayList<JobType> arr = new ArrayList<>();
+                JobType jobType = new JobType();
+                   jobType.setIdJobType(rs.getInt("idPuestoTrabajo"));
+                   jobType.setJobType(rs.getString("nombrePuestoTrabajo"));
+                   arr.add(jobType);
+                while (rs.next()) {
+                     jobType = new JobType();
+                    jobType.setIdJobType(rs.getInt("idPuestoTrabajo"));
+                   jobType.setJobType(rs.getString("nombrePuestoTrabajo"));
+                   arr.add(jobType);
+                   
+                }
+                for(int i = 0; i < arr.size(); i++) {
+                   System.out.println(arr.get(i).getJobType());
+                }
+                return arr;
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
 }

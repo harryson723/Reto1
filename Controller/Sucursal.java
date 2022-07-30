@@ -28,6 +28,13 @@ public class Sucursal {
     public void setNombreSucursal(String nombreSucursal) {
         this.nombreSucursal = nombreSucursal;
     }
+
+    @Override
+    public String toString() {
+        return nombreSucursal;
+    }
+    
+    
     
     
 }

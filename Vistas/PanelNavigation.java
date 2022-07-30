@@ -63,43 +63,60 @@ public class PanelNavigation extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         buttonAddEmployed = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tableEmployed = new javax.swing.JTable();
         buttonConsult = new javax.swing.JButton();
         textSearchEmp = new javax.swing.JTextField();
+        comboSucursal = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableEmployed = new javax.swing.JTable();
 
         tabPane.setBackground(new java.awt.Color(19, 60, 72));
         tabPane.setForeground(new java.awt.Color(255, 255, 255));
 
         panelSucursal.setBackground(new java.awt.Color(19, 60, 72));
 
-        jLabel4.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Roboto", 0, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("DIRECCION");
 
+        jLabel5.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("DEPARTAMENTO: ");
 
+        jLabel6.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("TIPO DE CALLE: ");
 
+        jLabel7.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("ZONA:");
 
+        jLabel8.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("N#");
 
+        textNumero1.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
+
+        textDepartamento.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         textDepartamento.setModel(enumDepartamento);
 
+        textTipoCalle.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         textTipoCalle.setModel(enumTipoCalle);
 
+        textZona.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         textZona.setModel(enumZona);
 
+        textNumero2.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
+
+        textNumero3.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
+
+        jLabel9.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("---");
 
+        buttonAddAddress.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         buttonAddAddress.setText("AÑADIR");
 
+        tableAddress.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         tableAddress.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -112,6 +129,9 @@ public class PanelNavigation extends javax.swing.JPanel {
 
         buttonConsultDeparment.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/showUser.png"))); // NOI18N
 
+        textConsultDeparment.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
+
+        jLabel10.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("DEPARTAMENTO: ");
 
@@ -161,7 +181,7 @@ public class PanelNavigation extends javax.swing.JPanel {
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelSucursalLayout.createSequentialGroup()
                                             .addGap(12, 12, 12)
                                             .addComponent(textZona, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 203, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 198, Short.MAX_VALUE)
                         .addComponent(buttonChangeToEmployed, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelSucursalLayout.createSequentialGroup()
                         .addContainerGap()
@@ -218,31 +238,47 @@ public class PanelNavigation extends javax.swing.JPanel {
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/logo.png"))); // NOI18N
 
+        jLabel2.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("MISION TIC STORE");
 
+        jLabel3.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("EMPLEADOS");
 
+        buttonAddEmployed.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         buttonAddEmployed.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/avatar.png"))); // NOI18N
         buttonAddEmployed.setText("AÑADIR EMPLEADO");
 
+        buttonConsult.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/showUser.png"))); // NOI18N
+
+        textSearchEmp.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
+
+        comboSucursal.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
+        comboSucursal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jScrollPane1.setMaximumSize(new java.awt.Dimension(453, 403));
+
+        tableEmployed.setFont(new java.awt.Font("Roboto", 0, 11)); // NOI18N
         tableEmployed.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "NOMBRE(S)", "APELLIDO(S)", "TIPO DE DOCUMENTO", "NUMERO DE DOCUMENTO", "CORREO", "SUCURSAL"
+                "NOMBRE(S)", "APELLIDO(S)", "TIPO DE DOCUMENTO", "NUMERO DE DOCUMENTO", "CORREO", "SUCURSAL", "TIPO EMPLEADO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tableEmployed.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        tableEmployed.setMaximumSize(new java.awt.Dimension(1000, 0));
+        tableEmployed.setName(""); // NOI18N
         tableEmployed.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tableEmployedMouseClicked(evt);
@@ -251,41 +287,46 @@ public class PanelNavigation extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tableEmployed);
         if (tableEmployed.getColumnModel().getColumnCount() > 0) {
             tableEmployed.getColumnModel().getColumn(0).setResizable(false);
+            tableEmployed.getColumnModel().getColumn(0).setPreferredWidth(200);
             tableEmployed.getColumnModel().getColumn(1).setResizable(false);
+            tableEmployed.getColumnModel().getColumn(1).setPreferredWidth(200);
             tableEmployed.getColumnModel().getColumn(2).setResizable(false);
+            tableEmployed.getColumnModel().getColumn(2).setPreferredWidth(200);
             tableEmployed.getColumnModel().getColumn(3).setResizable(false);
+            tableEmployed.getColumnModel().getColumn(3).setPreferredWidth(250);
             tableEmployed.getColumnModel().getColumn(4).setResizable(false);
+            tableEmployed.getColumnModel().getColumn(4).setPreferredWidth(300);
+            tableEmployed.getColumnModel().getColumn(5).setResizable(false);
+            tableEmployed.getColumnModel().getColumn(5).setPreferredWidth(200);
+            tableEmployed.getColumnModel().getColumn(6).setResizable(false);
+            tableEmployed.getColumnModel().getColumn(6).setPreferredWidth(100);
         }
-
-        buttonConsult.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/showUser.png"))); // NOI18N
 
         javax.swing.GroupLayout panelEmpleadosLayout = new javax.swing.GroupLayout(panelEmpleados);
         panelEmpleados.setLayout(panelEmpleadosLayout);
         panelEmpleadosLayout.setHorizontalGroup(
             panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEmpleadosLayout.createSequentialGroup()
-                .addComponent(jLabel1)
+            .addGroup(panelEmpleadosLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelEmpleadosLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
                         .addGap(359, 359, 359)
                         .addGroup(panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addGroup(panelEmpleadosLayout.createSequentialGroup()
                                 .addGap(12, 12, 12)
-                                .addComponent(jLabel3)))
-                        .addGap(0, 126, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEmpleadosLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textSearchEmp)
+                                .addComponent(jLabel3))))
+                    .addGroup(panelEmpleadosLayout.createSequentialGroup()
+                        .addComponent(textSearchEmp, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(buttonConsult, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(buttonAddEmployed)
-                        .addGap(37, 37, 37))))
-            .addGroup(panelEmpleadosLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
+                        .addComponent(comboSucursal, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22)
+                        .addComponent(buttonAddEmployed))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 711, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         panelEmpleadosLayout.setVerticalGroup(
             panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -296,15 +337,17 @@ public class PanelNavigation extends javax.swing.JPanel {
                         .addGap(29, 29, 29)
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3)
-                        .addGap(11, 11, 11)
-                        .addGroup(panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(buttonAddEmployed, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonConsult, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(textSearchEmp, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(30, 30, 30)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(180, Short.MAX_VALUE))
+                        .addComponent(jLabel3)))
+                .addGap(24, 24, 24)
+                .addGroup(panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(comboSucursal)
+                    .addGroup(panelEmpleadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(buttonAddEmployed, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buttonConsult, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(textSearchEmp))
+                .addGap(52, 52, 52)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(84, Short.MAX_VALUE))
         );
 
         tabPane.addTab("EMPLEADOS", panelEmpleados);
@@ -321,13 +364,13 @@ public class PanelNavigation extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void tableEmployedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableEmployedMouseClicked
-
-    }//GEN-LAST:event_tableEmployedMouseClicked
-
     private void buttonChangeToEmployedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonChangeToEmployedActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_buttonChangeToEmployedActionPerformed
+
+    private void tableEmployedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableEmployedMouseClicked
+
+    }//GEN-LAST:event_tableEmployedMouseClicked
 
 
     // </editor-fold>                        
@@ -339,6 +382,7 @@ public class PanelNavigation extends javax.swing.JPanel {
     public javax.swing.JButton buttonChangeToEmployed;
     public javax.swing.JButton buttonConsult;
     public javax.swing.JButton buttonConsultDeparment;
+    public javax.swing.JComboBox<String> comboSucursal;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;

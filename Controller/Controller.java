@@ -9,20 +9,24 @@ import Vistas.Index;
 import Vistas.PanelChangePass;
 import Vistas.PanelNavigation;
 import Vistas.PersonTable;
+import Vistas.PuestoTrabajo;
 import Vistas.ShowSucursalForm;
 import Vistas.ShowUserForm;
 import Vistas.SucursalManage;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class Controller implements ActionListener, MouseListener {
+public class Controller implements ActionListener, MouseListener, KeyListener {
 
     // variables de vistas
     private Index index;
@@ -32,6 +36,7 @@ public class Controller implements ActionListener, MouseListener {
     private ShowUserForm showUserForm;
     private ShowSucursalForm showSucursalForm;
     private SucursalManage sucursalManage;
+    private PuestoTrabajo puestoTrabajo;
     private int indexWidth, indexHeight;
     private int idDireccion = 0, idEmployed = 0;
 
@@ -48,6 +53,7 @@ public class Controller implements ActionListener, MouseListener {
         showSucursalForm = new ShowSucursalForm(index, true);
         showUserForm = new ShowUserForm(index, true);
         sucursalManage = new SucursalManage(index, true);
+        puestoTrabajo = new PuestoTrabajo(index, true);
         initComponent();
     }
 
@@ -56,7 +62,7 @@ public class Controller implements ActionListener, MouseListener {
         indexWidth = 501;
         indexHeight = 419;
         int personTableWidth = 763;
-        int personTableHeight = 385;
+        int personTableHeight = 485;
         int panelNavigationWidth = 813;
         int panelNavigationHeight = 504;
         int panelChangeWidth = 493;
@@ -76,6 +82,12 @@ public class Controller implements ActionListener, MouseListener {
         // eventos del inicion de sesion
         index.buttonLogin.addActionListener(this);
         index.buttonChangePass.addActionListener(this);
+        index.textUserName.addKeyListener(this);
+        index.textUserPass.addKeyListener(this);
+        initComponentWork();
+    }
+
+    public void initComponentWork() {
         // eventos del cambio de contrasena
         panelChangePass.buttonChangePass.addActionListener(this);
         // eventos del tabpane
@@ -85,11 +97,14 @@ public class Controller implements ActionListener, MouseListener {
         panelNavigation.buttonConsult.addActionListener(this);
         panelNavigation.buttonConsultDeparment.addActionListener(this);
         panelNavigation.tableAddress.addMouseListener(this);
+        panelNavigation.comboSucursal.addActionListener(this);
+        panelNavigation.buttonChangeToEmployed.addActionListener(this);
 
         // eventos de persontable
         personTable.buttonCancel.addActionListener(this);
         personTable.buttonCreate.addActionListener(this);
         personTable.buttonUploadImg.addActionListener(this);
+        personTable.comboSucursal.addActionListener(this);
 
         // eventos de showSucursalForm
         showSucursalForm.buttonNext.addActionListener(this);
@@ -105,9 +120,14 @@ public class Controller implements ActionListener, MouseListener {
         sucursalManage.buttonCancelar.addActionListener(this);
         sucursalManage.buttonEliminar.addActionListener(this);
 
+        // eventos del tipo puesto de trabajo
+        puestoTrabajo.buttonCancel.addActionListener(this);
+        puestoTrabajo.buttonSave.addActionListener(this);
         // cargar las tablas
-        panelNavigation.tableEmployed.setModel(model.updateTableEmployed(panelNavigation.tableEmployed.getModel(), ""));
+        panelNavigation.tableEmployed.setModel(model.updateTableEmployed(panelNavigation.tableEmployed.getModel(), "", false));
         panelNavigation.tableAddress.setModel(model.updateTableAddress(panelNavigation.tableAddress.getModel(), ""));
+
+        updateComboSucursal(panelNavigation.comboSucursal);
     }
 
     private void showWindow(JPanel panel) {
@@ -129,6 +149,7 @@ public class Controller implements ActionListener, MouseListener {
         if (e == index.buttonLogin) {
             if (model.verifyUserPass(index.textUserName.getText(), index.textUserPass.getText())) {
                 // mostrar ventana principal de la aplicacion
+
                 showWindow(panelNavigation);
             }
         }
@@ -149,20 +170,13 @@ public class Controller implements ActionListener, MouseListener {
 
         // consultar segun busqueda
         if (e == panelNavigation.buttonConsult) {
-            model.updateTableEmployed(panelNavigation.tableEmployed.getModel(), panelNavigation.textSearchEmp.getText());
+            model.updateTableEmployed(panelNavigation.tableEmployed.getModel(), panelNavigation.textSearchEmp.getText(), false);
         }
 
         if (e == panelNavigation.buttonAddEmployed) {
             // actualizar las sucursales disponibles
             panelNavigation.textSearchEmp.setText("");
-            ArrayList<Object[]> arreglo = model.enumSucursal();
-            Object[] sucursales = new Object[arreglo.size()];
-            int n = sucursales.length;
-            for (int i = 0; i < n; i++) {
-                sucursales[i] = arreglo.get(i)[1];
-            }
-            ComboBoxModel enumSucursal = new DefaultComboBoxModel(sucursales);
-            personTable.comboSucursal.setModel(enumSucursal);
+            updateComboSucursal(personTable.comboSucursal);
             showWindow(personTable);
         }
         // añadir un nuevo empleado
@@ -172,20 +186,22 @@ public class Controller implements ActionListener, MouseListener {
             String documentType = personTable.comboDocumentType.getSelectedItem().toString();
             String document = personTable.textDocument.getText();
             String email = personTable.textMail.getText();
-            String sucursal = personTable.comboSucursal.getSelectedItem().toString();
+            Sucursal sucursal = (Sucursal) personTable.comboSucursal.getSelectedItem();
+            JobType employedType = (JobType) personTable.comboTipoEmpleado.getSelectedItem();
+            
             if (documentType.equals("SeleccionaUnaOpcion")) {
                 JOptionPane.showMessageDialog(null, "Seleccione un tipo de documento");
             } else {
-                Employed employed = new Employed(firtsName, lastName, email, document, documentType, 0);
-                ArrayList<Object[]> arreglo = model.enumSucursal();
-                model.createEmployed(employed, arreglo, sucursal);
+                Employed employed = new Employed(firtsName, lastName, email, document, documentType, employedType, 0);
+
+                model.createEmployed(employed, sucursal);
                 clearPersonTable();
             }
 
         }
         if (e == personTable.buttonCancel) {
             showWindow(panelNavigation);
-            model.updateTableEmployed(panelNavigation.tableEmployed.getModel(), "");
+            model.updateTableEmployed(panelNavigation.tableEmployed.getModel(), "", false);
             clearPersonTable();
         }
 
@@ -229,6 +245,7 @@ public class Controller implements ActionListener, MouseListener {
                     showSucursalForm.textSucursalName.setText("");
                     clearAddress();
                     model.updateTableAddress(panelNavigation.tableAddress.getModel(), "");
+                    updateComboSucursal(panelNavigation.comboSucursal);
                 }
 
             }
@@ -261,21 +278,21 @@ public class Controller implements ActionListener, MouseListener {
             } catch (Exception errr) {
             }
         }
-        
+
         // eliminar un empleado
         if (e == showUserForm.buttonDelete) {
-            model.deleteEmployed(Integer.parseInt(showUserForm.textId.getText()));
+            model.deleteEmployed(showUserForm.idEmployed);
             try {
                 showUserForm.dispose();
             } catch (Exception errr) {
             }
-            model.updateTableEmployed(panelNavigation.tableEmployed.getModel(), "");
+            model.updateTableEmployed(panelNavigation.tableEmployed.getModel(), "", false);
         }
         if (e == showUserForm.buttonUpdate) {
-            int idEmp = Integer.parseInt(showUserForm.textId.getText());
-            model.editEmployed(showUserForm.textFirtsName.getText(), showUserForm.textLastName.getText(), showUserForm.textMail.getText(), idEmp);
+         
+            model.editEmployed(showUserForm.textFirtsName.getText(), showUserForm.textLastName.getText(), showUserForm.textMail.getText(), showUserForm.idEmployed);
             showUserForm.dispose();
-            model.updateTableEmployed(panelNavigation.tableEmployed.getModel(), "");
+            model.updateTableEmployed(panelNavigation.tableEmployed.getModel(), "", false);
         }
         // actualizar la sucursal seleccionada
         if (e == sucursalManage.buttonActualizar) {
@@ -291,7 +308,7 @@ public class Controller implements ActionListener, MouseListener {
             } else if (departamento.equals("SeleccionaUnaOpcion") || calle.equals("SeleccionaUnaOpcion") || zona.equals("SeleccionaUnaOpcion")) {
                 JOptionPane.showMessageDialog(null, "Error, Seleccione debe seleccionar (Departamento, Calle, Z0na)", "Error ComboBox sin seleccionar", 0);
             } else {
-                model.updateSucursalInfo(sucursal, numero1, numero2, numero3, calle, zona, departamento ,sucursalManage.idSucursal);
+                model.updateSucursalInfo(sucursal, numero1, numero2, numero3, calle, zona, departamento, sucursalManage.idSucursal);
                 model.updateTableAddress(panelNavigation.tableAddress.getModel(), "");
                 sucursalManage.dispose();
             }
@@ -300,13 +317,53 @@ public class Controller implements ActionListener, MouseListener {
         if (e == sucursalManage.buttonCancelar) {
             sucursalManage.dispose();
         }
-        
+
         // eliminar una sucursal 
         if (e == sucursalManage.buttonEliminar) {
-            model.deleteSucursal( sucursalManage.idSucursal);
-             model.updateTableEmployed(panelNavigation.tableEmployed.getModel(), "");
+            model.deleteSucursal(sucursalManage.idSucursal);
+            model.updateTableEmployed(panelNavigation.tableEmployed.getModel(), "", false);
             model.updateTableAddress(panelNavigation.tableAddress.getModel(), "");
             sucursalManage.dispose();
+        }
+
+        // manejar eventos del combosucursal para busqueda
+        if (e == panelNavigation.comboSucursal) {
+            Sucursal selectedItem = (Sucursal) panelNavigation.comboSucursal.getSelectedItem();
+            model.updateTableEmployed(panelNavigation.tableEmployed.getModel(), selectedItem.getNombreSucursal(), true);
+        }
+
+        // mostrar panel de puestos de trabajo
+        if (e == panelNavigation.buttonChangeToEmployed) {
+            updateComboSucursal(puestoTrabajo.comboSucursal);
+            puestoTrabajo.setVisible(true);
+
+        }
+
+        // eventos de creacion y cerrado de cracion de puestos en la base de datos
+        if (e == puestoTrabajo.buttonCancel) {
+            puestoTrabajo.dispose();
+        }
+
+        if (e == puestoTrabajo.buttonSave) {
+            Sucursal sucursal = (Sucursal) puestoTrabajo.comboSucursal.getSelectedItem();
+            String puesto = puestoTrabajo.comboPuesto.getSelectedItem().toString();
+            String salario = puestoTrabajo.textSalario.getText();
+
+            model.insertJob(sucursal.getIdSucursal(), sucursal.getNombreSucursal(), puesto, salario);
+        }
+
+        if (e == personTable.comboSucursal) {
+            Sucursal sucursal = (Sucursal) personTable.comboSucursal.getSelectedItem();
+            ArrayList<JobType> arreglo = model.getComboJobType(sucursal);
+            if (arreglo != null) {
+                
+                ComboBoxModel enumJobType = new DefaultComboBoxModel(arreglo.toArray());
+                personTable.comboTipoEmpleado.setModel(enumJobType);
+            } else {
+                ComboBoxModel enumJobType = new DefaultComboBoxModel(new Object[]{"Seleccione una opcion"});
+                personTable.comboTipoEmpleado.setModel(enumJobType);
+            }
+
         }
 
     }
@@ -322,20 +379,10 @@ public class Controller implements ActionListener, MouseListener {
             String document = (String) panelNavigation.tableEmployed.getValueAt(selectedRow, 3);
             String mail = (String) panelNavigation.tableEmployed.getValueAt(selectedRow, 4);
             String sucursal = (String) panelNavigation.tableEmployed.getValueAt(selectedRow, 5);
-            model.getIdEmployed(firtsNaame, lastName, document, mail, sucursal);
             int idEmployed = model.getIdEmployed(firtsNaame, lastName, document, mail, sucursal);
 
             // cargar las sucursales disponnibles
-            ArrayList<Object[]> arreglo = model.enumSucursal();
-            Object[] sucursales = new Object[arreglo.size()];
-            int n = sucursales.length;
-            for (int i = 0; i < n; i++) {
-                sucursales[i] = arreglo.get(i)[1];
-            }
-            ComboBoxModel enumSucursal = new DefaultComboBoxModel(sucursales);
-            showUserForm.comboSucursal.setModel(enumSucursal);
-            showUserForm.comboSucursal.setSelectedItem(sucursal);
-
+            updateComboSucursal(showUserForm.comboSucursal);
             // colocar informacion del empleado seleccionado 
             showUserForm.idEmployed = idEmployed;
             showUserForm.textFirtsName.setText(firtsNaame);
@@ -375,11 +422,12 @@ public class Controller implements ActionListener, MouseListener {
 
             sucursalManage.setVisible(true);
         }
-        
+
         // subir imagenes
-        if(e == personTable.buttonUploadImg) {
+        if (e == personTable.buttonUploadImg) {
             System.out.println("Boton imagen");
         }
+
     }
 
     @Override
@@ -409,6 +457,45 @@ public class Controller implements ActionListener, MouseListener {
         panelNavigation.textNumero1.setText("");
         panelNavigation.textNumero2.setText("");
         panelNavigation.textNumero3.setText("");
+    }
+
+    @Override
+    public void keyTyped(KeyEvent ae) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent ae) {
+        Object e = ae.getSource();
+
+        if (KeyEvent.getKeyText(ae.getKeyCode()).equals("Enter")) {
+            // verificar usuario y contraseña
+            if (e == index.textUserName || e == index.textUserPass) {
+                if (model.verifyUserPass(index.textUserName.getText(), index.textUserPass.getText())) {
+                    // mostrar ventana principal de la aplicacion
+                    showWindow(panelNavigation);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+    }
+
+    private void updateComboSucursal(JComboBox combo) {
+        // actualizar las sucursales disponibles en el panel de navegacion para la busqueda
+        ArrayList<Object[]> arreglo = model.enumSucursal();
+        Object[] sucursales = new Object[arreglo.size()];
+        int n = sucursales.length;
+        for (int i = 0; i < n; i++) {
+            Sucursal sucursal = new Sucursal();
+            sucursal.setIdSucursal((int) arreglo.get(i)[0]);
+            sucursal.setNombreSucursal((String) arreglo.get(i)[1]);
+            sucursales[i] = sucursal;
+        }
+        ComboBoxModel enumSucursal = new DefaultComboBoxModel(sucursales);
+        combo.setModel(enumSucursal);
     }
 
 }
